@@ -1,0 +1,80 @@
+{
+  "config": {
+    "run_name": "affordable",
+    "models": {
+      "transformers": [
+        "microsoft/phi-2",
+        "google/gemma-2b",
+        "mistralai/Mistral-7B-v0.1"
+      ],
+      "ssm": []
+    },
+    "mode": "natural_long",
+    "controls": [
+      "none"
+    ],
+    "token_windows": {
+      "size": 128,
+      "stride": 64
+    },
+    "gen": {
+      "max_new_tokens": 800,
+      "temperature": 0.3,
+      "top_p": 0.95,
+      "do_sample": true,
+      "repetition_penalty": 1.1
+    },
+    "datasets": {
+      "qa_file": "data/prompts_qa_affordable.jsonl",
+      "reasoning_file": "data/prompts_reasoning_affordable.jsonl",
+      "neutral_file": "data/neutral_controls.jsonl",
+      "factual_file": "data/control_snippets.json"
+    },
+    "metrics": {
+      "internal": [
+        "variance",
+        "effective_rank",
+        "participation_ratio"
+      ],
+      "external": [
+        "delta_i",
+        "ngram_novelty",
+        "char_entropy",
+        "qa_fail"
+      ]
+    },
+    "prediction": {
+      "early_window_tokens": 256,
+      "test_split_seed": 23
+    },
+    "intervention": {
+      "enable": false
+    },
+    "selection": {
+      "max_prompts_qa": 150,
+      "max_prompts_reasoning": 50
+    },
+    "stopping": {
+      "wall_minutes": 1800
+    },
+    "io": {
+      "out_dir": "runs/affordable/",
+      "save_hidden_states": false,
+      "save_sketches": true
+    },
+    "seed": 13,
+    "current_control": "none"
+  },
+  "n_prompts_total": 346,
+  "n_qa": 150,
+  "n_reasoning": 50,
+  "models": {
+    "transformers": [
+      "microsoft/phi-2",
+      "google/gemma-2b",
+      "mistralai/Mistral-7B-v0.1"
+    ],
+    "ssm": []
+  },
+  "runtime_seconds": 108400.16567754745
+}

@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you use this code or data, please cite it as below."
+type: software
+title: "No Evidence for Epistemic Entropy Collapse in Small Open Language Models"
+authors:
+  - family-names: DeVilling
+    given-names: Bentley
+    affiliation: Course Correct Labs
+repository-code: "https://github.com/coursecorrectlabs/entropy-collapse-null"
+license: Apache-2.0
+version: 1.0.0
+date-released: 2025-01-01
+keywords:
+  - language models
+  - epistemic collapse
+  - effective rank
+  - interpretability
+  - neural collapse
+preferred-citation:
+  type: article
+  title: "No Evidence for Epistemic Entropy Collapse in Small Open Language Models"
+  authors:
+    - family-names: DeVilling
+      given-names: Bentley
+      affiliation: Course Correct Labs
+  year: 2025
+  notes: "Preprint"
