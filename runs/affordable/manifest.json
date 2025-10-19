@@ -4,10 +4,10 @@
     "models": {
       "transformers": [
         "microsoft/phi-2",
-        "google/gemma-2b",
         "mistralai/Mistral-7B-v0.1"
       ],
-      "ssm": []
+      "ssm": [],
+      "_note": "google/gemma-2b was attempted but failed due to gated access restrictions"
     },
     "mode": "natural_long",
     "controls": [
@@ -66,15 +66,26 @@
     "current_control": "none"
   },
   "n_prompts_total": 346,
+  "n_prompts_by_model": {
+    "microsoft/phi-2": 200,
+    "mistralai/Mistral-7B-v0.1": 146
+  },
   "n_qa": 150,
   "n_reasoning": 50,
   "models": {
     "transformers": [
       "microsoft/phi-2",
-      "google/gemma-2b",
       "mistralai/Mistral-7B-v0.1"
     ],
-    "ssm": []
+    "ssm": [],
+    "failed": [
+      {
+        "model": "google/gemma-2b",
+        "reason": "gated_access",
+        "status": "not_included_in_dataset"
+      }
+    ]
   },
-  "runtime_seconds": 108400.16567754745
+  "runtime_seconds": 108400.16567754745,
+  "_dataset_status": "partial - Mistral-7B has 146/200 sequences due to computational constraints"
 }

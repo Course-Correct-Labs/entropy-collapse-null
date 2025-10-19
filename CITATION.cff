@@ -6,7 +6,7 @@ authors:
   - family-names: DeVilling
     given-names: Bentley
     affiliation: Course Correct Labs
-repository-code: "https://github.com/coursecorrectlabs/entropy-collapse-null"
+repository-code: "https://github.com/Course-Correct-Labs/entropy-collapse-null"
 license: Apache-2.0
 version: 1.0.0
 date-released: 2025-01-01
@@ -24,4 +24,5 @@ preferred-citation:
       given-names: Bentley
       affiliation: Course Correct Labs
   year: 2025
-  notes: "Preprint"
+  notes: "Course Correct Labs Technical Report CCTR-001"
+  month: 10

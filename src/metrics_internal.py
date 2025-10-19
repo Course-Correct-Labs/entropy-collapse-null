@@ -7,6 +7,10 @@ internal representational structure.
 
 from typing import List
 import numpy as np
+import logging
+
+# FIX: Add logging for numerical stability warnings
+logger = logging.getLogger(__name__)
 
 
 def compute_effective_rank(singular_values: np.ndarray) -> float:
@@ -49,7 +53,7 @@ def compute_participation_ratio(singular_values: np.ndarray) -> float:
         singular_values: Array of singular values from SVD
 
     Returns:
-        Participation ratio (float)
+        Participation ratio (float), or None if computation produces inf/nan
     """
     if len(singular_values) == 0:
         return 0.0
@@ -61,7 +65,18 @@ def compute_participation_ratio(singular_values: np.ndarray) -> float:
     if denominator == 0:
         return 0.0
 
-    return float(numerator / denominator)
+    # FIX: Add numerical stability guard for inf/nan values
+    pr = numerator / denominator
+
+    if not np.isfinite(pr):
+        logger.warning(
+            f"Participation ratio computation produced non-finite value: {pr}. "
+            f"Returning None. Singular values shape: {singular_values.shape}, "
+            f"numerator: {numerator}, denominator: {denominator}"
+        )
+        return None  # FIX: Return None for non-finite values (will be stored as empty in CSV)
+
+    return float(pr)
 
 
 def compute_variance(hidden_states: np.ndarray) -> float:

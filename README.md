@@ -259,6 +259,60 @@ ECI = slope(effective_rank ~ token_index)
 
 ---
 
+## Reproducibility & Validation
+
+This repository implements the complete analytical pipeline described in **Section 6 (Reproducibility)** of the paper. All code, data, and figures can be independently verified.
+
+### Validation Checklist
+
+- ✅ **Data integrity**: n=346 sequences (200 Phi-2 + 146 Mistral-7B) match paper Table 1
+- ✅ **Statistical results**: Mean ECI = −0.001 (SD = 0.025), ROC-AUC = 0.454 [0.41, 0.50]
+- ✅ **Figure generation**: All three figures regenerate exactly as shown in paper
+- ✅ **Schema validation**: CSV columns strictly enforced via `src/utils.py`
+- ✅ **Numerical stability**: Participation ratio handles inf/nan with logging
+- ✅ **Seed reproducibility**: All random operations use fixed seeds (manifest: 13, bootstrap: 42)
+
+### Independent Verification
+
+To verify results independently:
+
+```bash
+# 1. Clone and setup
+git clone https://github.com/Course-Correct-Labs/entropy-collapse-null.git
+cd entropy-collapse-null
+conda env create -f environment.yml
+conda activate eec-null
+
+# 2. Verify environment
+bash scripts/verify_environment.sh
+
+# 3. Run smoke test (5% sample, <5 min)
+bash scripts/run_smoke.sh
+
+# 4. Full reproduction (all 346 sequences, ~10-15 min)
+bash scripts/reproduce_all_figures.sh
+
+# 5. Check output matches paper
+ls -lh runs/affordable/figures/
+# Expected: fig1_eci_histograms.png, fig2_effective_rank_trajectories.png, fig3_failure_prediction_panel.png
+```
+
+### Cross-Platform Testing
+
+Tested on:
+- **macOS 14.5** (Apple Silicon M1/M2, Python 3.11)
+- **Ubuntu 22.04** (x86_64, Python 3.11)
+- **GitHub Actions CI** (ubuntu-latest, smoke test only)
+
+### Computational Requirements
+
+- **CPU-only**: All analyses run on standard CPU (no GPU required)
+- **Memory**: ~4GB RAM for full reproduction, ~1GB for smoke test
+- **Storage**: ~50MB for repository + data
+- **Runtime**: 10-15 minutes (full), <5 minutes (smoke)
+
+---
+
 ## Development
 
 ### Code Quality

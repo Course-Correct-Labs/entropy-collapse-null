@@ -25,20 +25,32 @@ COLORS = {
     'black': '#000000',
 }
 
-# CSV column expectations
+# FIX: CSV column expectations - updated to match actual CSV headers
 INTERNAL_COLS_REQUIRED = [
     'prompt_id',
     'model_name',
+    'control',
+    'mode',
     'eci_raw',
     'eci_residualized',
     'early_eci_raw',
     'effective_ranks',
+    'participation_ratios',
+    'variances',
+    'window_starts',
+    'window_ends',
 ]
 
 EXTERNAL_COLS_REQUIRED = [
     'prompt_id',
     'model_name',
+    'control',
+    'mode',
+    'delta_i_values',
+    'ngram_novelty_values',
+    'char_entropy_values',
     'qa_failure',
+    'reasoning_failures',
 ]
 
 # Statistical parameters
