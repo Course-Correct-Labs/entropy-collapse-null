@@ -3,16 +3,25 @@ Bootstrap confidence intervals for ROC-AUC and PR-AUC.
 """
 
 from typing import Tuple
+
 import numpy as np
-from sklearn.metrics import roc_auc_score, average_precision_score, roc_curve, precision_recall_curve
+from sklearn.metrics import (
+    average_precision_score,
+    precision_recall_curve,
+    roc_auc_score,
+    roc_curve,
+)
 
 from .constants import BOOTSTRAP_N_RESAMPLES, BOOTSTRAP_SEED, CI_ALPHA
 
 
-def bootstrap_roc_auc(y_true: np.ndarray, y_score: np.ndarray,
-                      n_bootstrap: int = BOOTSTRAP_N_RESAMPLES,
-                      seed: int = BOOTSTRAP_SEED,
-                      alpha: float = CI_ALPHA) -> Tuple[float, float, float]:
+def bootstrap_roc_auc(
+    y_true: np.ndarray,
+    y_score: np.ndarray,
+    n_bootstrap: int = BOOTSTRAP_N_RESAMPLES,
+    seed: int = BOOTSTRAP_SEED,
+    alpha: float = CI_ALPHA,
+) -> Tuple[float, float, float]:
     """
     Compute ROC-AUC with bootstrap confidence interval.
 
@@ -65,10 +74,13 @@ def bootstrap_roc_auc(y_true: np.ndarray, y_score: np.ndarray,
     return (float(base_auc), float(lower), float(upper))
 
 
-def bootstrap_pr_auc(y_true: np.ndarray, y_score: np.ndarray,
-                     n_bootstrap: int = BOOTSTRAP_N_RESAMPLES,
-                     seed: int = BOOTSTRAP_SEED,
-                     alpha: float = CI_ALPHA) -> Tuple[float, float, float]:
+def bootstrap_pr_auc(
+    y_true: np.ndarray,
+    y_score: np.ndarray,
+    n_bootstrap: int = BOOTSTRAP_N_RESAMPLES,
+    seed: int = BOOTSTRAP_SEED,
+    alpha: float = CI_ALPHA,
+) -> Tuple[float, float, float]:
     """
     Compute PR-AUC (Average Precision) with bootstrap confidence interval.
 
@@ -120,7 +132,9 @@ def bootstrap_pr_auc(y_true: np.ndarray, y_score: np.ndarray,
     return (float(base_ap), float(lower), float(upper))
 
 
-def compute_roc_curve_data(y_true: np.ndarray, y_score: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+def compute_roc_curve_data(
+    y_true: np.ndarray, y_score: np.ndarray
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Compute ROC curve data.
 
@@ -140,7 +154,9 @@ def compute_roc_curve_data(y_true: np.ndarray, y_score: np.ndarray) -> Tuple[np.
         return (np.array([0, 1]), np.array([0, 1]), np.array([0, 1]))
 
 
-def compute_pr_curve_data(y_true: np.ndarray, y_score: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+def compute_pr_curve_data(
+    y_true: np.ndarray, y_score: np.ndarray
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """
     Compute Precision-Recall curve data.
 
@@ -162,7 +178,9 @@ def compute_pr_curve_data(y_true: np.ndarray, y_score: np.ndarray) -> Tuple[np.n
         return (np.array([prevalence, prevalence]), np.array([0, 1]), np.array([0]))
 
 
-def compute_calibration(y_true: np.ndarray, y_prob: np.ndarray, n_bins: int = 10) -> Tuple[np.ndarray, np.ndarray]:
+def compute_calibration(
+    y_true: np.ndarray, y_prob: np.ndarray, n_bins: int = 10
+) -> Tuple[np.ndarray, np.ndarray]:
     """
     Compute calibration curve (binned predicted vs observed probabilities).
 

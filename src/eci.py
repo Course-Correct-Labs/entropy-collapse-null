@@ -4,14 +4,17 @@ Epistemic Collapse Index (ECI) computation and analysis.
 ECI measures the rate of change in internal metrics over token generation.
 """
 
-from typing import List, Tuple, Optional
+from typing import List, Optional, Tuple
+
 import numpy as np
 from scipy import stats
 
 from .constants import ECI_COLLAPSE_THRESHOLD
 
 
-def compute_eci_slope(metric_values: List[float], token_indices: Optional[List[int]] = None) -> float:
+def compute_eci_slope(
+    metric_values: List[float], token_indices: Optional[List[int]] = None
+) -> float:
     """
     Compute ECI as the slope of metric values over token generation.
 
@@ -32,7 +35,7 @@ def compute_eci_slope(metric_values: List[float], token_indices: Optional[List[i
     if token_indices is None:
         x = np.arange(len(y))
     else:
-        x = np.array(token_indices[:len(y)])
+        x = np.array(token_indices[: len(y)])
 
     # Linear regression
     slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
@@ -40,7 +43,9 @@ def compute_eci_slope(metric_values: List[float], token_indices: Optional[List[i
     return float(slope)
 
 
-def residualize_eci(eci_values: np.ndarray, control_eci: Optional[np.ndarray] = None) -> np.ndarray:
+def residualize_eci(
+    eci_values: np.ndarray, control_eci: Optional[np.ndarray] = None
+) -> np.ndarray:
     """
     Residualize ECI values against control condition.
 
@@ -75,7 +80,9 @@ def classify_collapse(eci: float, threshold: float = ECI_COLLAPSE_THRESHOLD) -> 
     return eci < threshold
 
 
-def compute_collapse_fraction(eci_values: np.ndarray, threshold: float = ECI_COLLAPSE_THRESHOLD) -> float:
+def compute_collapse_fraction(
+    eci_values: np.ndarray, threshold: float = ECI_COLLAPSE_THRESHOLD
+) -> float:
     """
     Compute fraction of sequences with ECI below collapse threshold.
 
@@ -105,24 +112,29 @@ def compute_eci_stats(eci_values: np.ndarray) -> dict:
     """
     if len(eci_values) == 0:
         return {
-            'mean': 0.0,
-            'std': 0.0,
-            'median': 0.0,
-            'collapse_fraction': 0.0,
-            'n': 0,
+            "mean": 0.0,
+            "std": 0.0,
+            "median": 0.0,
+            "collapse_fraction": 0.0,
+            "n": 0,
         }
 
     return {
-        'mean': float(np.mean(eci_values)),
-        'std': float(np.std(eci_values)),
-        'median': float(np.median(eci_values)),
-        'collapse_fraction': compute_collapse_fraction(eci_values),
-        'n': len(eci_values),
+        "mean": float(np.mean(eci_values)),
+        "std": float(np.std(eci_values)),
+        "median": float(np.median(eci_values)),
+        "collapse_fraction": compute_collapse_fraction(eci_values),
+        "n": len(eci_values),
     }
 
 
-def bootstrap_ci(values: np.ndarray, stat_func=np.mean, n_bootstrap: int = 1000,
-                 alpha: float = 0.05, seed: int = 42) -> Tuple[float, float]:
+def bootstrap_ci(
+    values: np.ndarray,
+    stat_func=np.mean,
+    n_bootstrap: int = 1000,
+    alpha: float = 0.05,
+    seed: int = 42,
+) -> Tuple[float, float]:
     """
     Compute bootstrap confidence interval for a statistic.
 

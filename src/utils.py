@@ -2,15 +2,14 @@
 Utility functions for data loading and validation.
 """
 
-import json
 import ast
+import json
 from pathlib import Path
-from typing import Dict, List, Tuple, Any
+from typing import Any, Dict, List
 
 import pandas as pd
-import numpy as np
 
-from .constants import INTERNAL_COLS_REQUIRED, EXTERNAL_COLS_REQUIRED
+from .constants import EXTERNAL_COLS_REQUIRED, INTERNAL_COLS_REQUIRED
 
 
 def load_manifest(run_dir: Path) -> Dict[str, Any]:
@@ -22,7 +21,7 @@ def load_manifest(run_dir: Path) -> Dict[str, Any]:
             "This file contains run metadata and configuration."
         )
 
-    with open(manifest_path, 'r') as f:
+    with open(manifest_path, "r") as f:
         return json.load(f)
 
 
@@ -60,8 +59,13 @@ def load_metrics_internal(run_dir: Path) -> pd.DataFrame:
         )
 
     # Parse list columns stored as strings
-    list_cols = ['effective_ranks', 'participation_ratios', 'variances',
-                 'window_starts', 'window_ends']
+    list_cols = [
+        "effective_ranks",
+        "participation_ratios",
+        "variances",
+        "window_starts",
+        "window_ends",
+    ]
     for col in list_cols:
         if col in df.columns:
             df[col] = df[col].apply(safe_parse_list)
@@ -100,23 +104,23 @@ def load_metrics_external(run_dir: Path) -> pd.DataFrame:
         )
 
     # Parse list/dict columns
-    list_cols = ['delta_i_values', 'ngram_novelty_values', 'char_entropy_values']
+    list_cols = ["delta_i_values", "ngram_novelty_values", "char_entropy_values"]
     for col in list_cols:
         if col in df.columns:
             df[col] = df[col].apply(safe_parse_list)
 
-    if 'reasoning_failures' in df.columns:
-        df['reasoning_failures'] = df['reasoning_failures'].apply(safe_parse_dict)
+    if "reasoning_failures" in df.columns:
+        df["reasoning_failures"] = df["reasoning_failures"].apply(safe_parse_dict)
 
     # Ensure qa_failure is boolean
-    df['qa_failure'] = df['qa_failure'].astype(bool)
+    df["qa_failure"] = df["qa_failure"].astype(bool)
 
     return df
 
 
 def safe_parse_list(val: Any) -> List:
     """Safely parse a string representation of a list."""
-    if pd.isna(val) or val == '':
+    if pd.isna(val) or val == "":
         return []
     if isinstance(val, (list, tuple)):
         return list(val)
@@ -131,7 +135,7 @@ def safe_parse_list(val: Any) -> List:
 
 def safe_parse_dict(val: Any) -> Dict:
     """Safely parse a string representation of a dict."""
-    if pd.isna(val) or val == '':
+    if pd.isna(val) or val == "":
         return {}
     if isinstance(val, dict):
         return val
@@ -149,9 +153,9 @@ def merge_metrics(df_internal: pd.DataFrame, df_external: pd.DataFrame) -> pd.Da
     merged = pd.merge(
         df_internal,
         df_external,
-        on=['prompt_id', 'model_name'],
-        how='inner',
-        suffixes=('', '_external')
+        on=["prompt_id", "model_name"],
+        how="inner",
+        suffixes=("", "_external"),
     )
 
     if len(merged) == 0:
@@ -163,7 +167,9 @@ def merge_metrics(df_internal: pd.DataFrame, df_external: pd.DataFrame) -> pd.Da
     return merged
 
 
-def subsample_data(df: pd.DataFrame, frac: float = 0.05, min_rows: int = 30, seed: int = 42) -> pd.DataFrame:
+def subsample_data(
+    df: pd.DataFrame, frac: float = 0.05, min_rows: int = 30, seed: int = 42
+) -> pd.DataFrame:
     """Subsample DataFrame for smoke tests."""
     n_target = max(int(len(df) * frac), min_rows)
     n_target = min(n_target, len(df))

@@ -5,9 +5,10 @@ These metrics are computed from model hidden states and measure
 internal representational structure.
 """
 
-from typing import List
-import numpy as np
 import logging
+from typing import List
+
+import numpy as np
 
 # FIX: Add logging for numerical stability warnings
 logger = logging.getLogger(__name__)
@@ -30,7 +31,7 @@ def compute_effective_rank(singular_values: np.ndarray) -> float:
         return 0.0
 
     # Normalize to probability distribution
-    s_squared = singular_values ** 2
+    s_squared = singular_values**2
     p = s_squared / s_squared.sum()
 
     # Avoid log(0)
@@ -58,9 +59,9 @@ def compute_participation_ratio(singular_values: np.ndarray) -> float:
     if len(singular_values) == 0:
         return 0.0
 
-    s_squared = singular_values ** 2
+    s_squared = singular_values**2
     numerator = s_squared.sum() ** 2
-    denominator = (s_squared ** 2).sum()
+    denominator = (s_squared**2).sum()
 
     if denominator == 0:
         return 0.0
@@ -103,12 +104,12 @@ def aggregate_trajectory(values: List[float]) -> dict:
         Dict with mean, std, min, max
     """
     if not values or len(values) == 0:
-        return {'mean': 0.0, 'std': 0.0, 'min': 0.0, 'max': 0.0}
+        return {"mean": 0.0, "std": 0.0, "min": 0.0, "max": 0.0}
 
     arr = np.array(values)
     return {
-        'mean': float(np.mean(arr)),
-        'std': float(np.std(arr)),
-        'min': float(np.min(arr)),
-        'max': float(np.max(arr)),
+        "mean": float(np.mean(arr)),
+        "std": float(np.std(arr)),
+        "min": float(np.min(arr)),
+        "max": float(np.max(arr)),
     }

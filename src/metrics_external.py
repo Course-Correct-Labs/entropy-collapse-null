@@ -5,8 +5,9 @@ These metrics are computed from generated text and measure
 observable behavioral properties.
 """
 
-from typing import List, Set
 from collections import Counter
+from typing import Set
+
 import numpy as np
 
 
@@ -24,9 +25,10 @@ def compute_delta_i_drift(text1: str, text2: str, n: int = 3) -> float:
     Returns:
         ΔI drift value [0, 1]
     """
+
     def get_ngrams(text: str, n: int) -> Set[str]:
         tokens = text.split()
-        return set(' '.join(tokens[i:i+n]) for i in range(len(tokens) - n + 1))
+        return set(" ".join(tokens[i : i + n]) for i in range(len(tokens) - n + 1))
 
     ngrams1 = get_ngrams(text1, n)
     ngrams2 = get_ngrams(text2, n)
@@ -57,7 +59,7 @@ def compute_ngram_novelty(text: str, n: int = 3) -> float:
         Novelty value [0, 1]
     """
     tokens = text.split()
-    ngrams = [' '.join(tokens[i:i+n]) for i in range(len(tokens) - n + 1)]
+    ngrams = [" ".join(tokens[i : i + n]) for i in range(len(tokens) - n + 1)]
 
     if not ngrams:
         return 0.0
@@ -115,8 +117,8 @@ def detect_repetition(text: str, window_size: int = 50, threshold: float = 0.8) 
 
     # Compare consecutive windows
     for i in range(len(tokens) - window_size * 2):
-        window1 = set(tokens[i:i+window_size])
-        window2 = set(tokens[i+window_size:i+window_size*2])
+        window1 = set(tokens[i : i + window_size])
+        window2 = set(tokens[i + window_size : i + window_size * 2])
 
         if not window1 or not window2:
             continue
