@@ -251,7 +251,7 @@ def figure3_failure_prediction_panel(
     ax1.plot(
         [0, 1],
         [0, 1],
-        color=COLORS["gray"],
+        color=COLORS["grey"],
         linestyle="--",
         linewidth=1,
         label="Chance",
@@ -277,7 +277,7 @@ def figure3_failure_prediction_panel(
     )
     ax2.axhline(
         baseline,
-        color=COLORS["gray"],
+        color=COLORS["grey"],
         linestyle="--",
         linewidth=1,
         label=f"Baseline ({baseline:.3f})",
@@ -306,7 +306,7 @@ def figure3_failure_prediction_panel(
     ax3.plot(
         [0, 1],
         [0, 1],
-        color=COLORS["gray"],
+        color=COLORS["grey"],
         linestyle="--",
         linewidth=1,
         label="Perfect calibration",
