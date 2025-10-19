@@ -468,4 +468,4 @@ For questions, issues, or collaboration inquiries, please open a GitHub issue or
 
 ---
 
-**Last updated:** January 2025
+**Last updated:** October 2025
