@@ -3,6 +3,7 @@
 [![CI](https://github.com/Course-Correct-Labs/entropy-collapse-null/actions/workflows/ci.yml/badge.svg)](https://github.com/Course-Correct-Labs/entropy-collapse-null/actions/workflows/ci.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/release/python-3110/)
+[![arXiv](https://img.shields.io/badge/arXiv-pending-b31b1b.svg)](https://arxiv.org/)
 [![DOI](https://zenodo.org/badge/Course-Correct-Labs/entropy-collapse-null.svg)](https://doi.org/10.5281/zenodo.PLACEHOLDER)
 
 **Author:** Bentley DeVilling
@@ -46,7 +47,7 @@ conda activate eec-null
 bash scripts/reproduce_all_figures.sh
 ```
 
-**Output:** Three publication-quality figures (600 DPI) in `figures/`:
+**Output:** Three publication-quality figures (600 DPI) in `runs/affordable/figures/`:
 - `fig1_eci_histograms.png`
 - `fig2_effective_rank_trajectories.png`
 - `fig3_failure_prediction_panel.png`
@@ -131,7 +132,7 @@ bash scripts/reproduce_all_figures.sh
 ```
 
 **Runtime:** ~10-15 minutes on CPU
-**Output:** `figures/fig1_eci_histograms.png`, `fig2_effective_rank_trajectories.png`, `fig3_failure_prediction_panel.png`
+**Output:** `runs/affordable/figures/fig1_eci_histograms.png`, `fig2_effective_rank_trajectories.png`, `fig3_failure_prediction_panel.png`
 
 ### Smoke Test (Fast Validation)
 
@@ -141,7 +142,7 @@ bash scripts/run_smoke.sh
 
 **Runtime:** <5 minutes
 **Purpose:** Validates code correctness on 5% subsample (n≈30)
-**Output:** `figures/smoke/` directory
+**Output:** `runs/affordable/figures/*_smoke.png` files
 
 ### Python API
 
@@ -152,8 +153,9 @@ from src.figures import generate_all_figures
 # Generate all figures
 generate_all_figures(
     run_dir=Path("runs/affordable"),
-    output_dir=Path("figures"),
-    smoke=False  # Set True for fast smoke test
+    output_dir=Path("runs/affordable/figures"),
+    smoke=False,  # Set True for fast smoke test
+    dpi=600
 )
 ```
 
@@ -161,10 +163,10 @@ generate_all_figures(
 
 ```bash
 # Full reproduction
-python -m src.cli reproduce --run-dir runs/affordable --output-dir figures/
+python -m src.cli reproduce --in runs/affordable --out runs/affordable/figures --dpi 600
 
 # Smoke test
-python -m src.cli smoke --run-dir runs/affordable --output-dir figures/smoke/
+python -m src.cli reproduce --in runs/affordable --out runs/affordable/figures --dpi 300 --smoke
 ```
 
 ---
@@ -179,7 +181,7 @@ Distribution of residualized Epistemic Collapse Index (ECI) values for microsoft
 
 ### Figure 2: Effective Rank Trajectories
 
-Representative effective rank trajectories over token generation for "collapsed" vs "normal" sequences. Both groups show substantial variability with no distinctive pattern.
+Effective rank trajectories over token generation for "collapsed" (ECI < −0.02) vs "normal" (ECI ≥ −0.02) sequences. Each line represents one sequence (n=50 sampled per group). Both groups show substantial within-group variability with no systematic decline across ~800 tokens of generation.
 
 ![Figure 2](figures/fig2_effective_rank_trajectories.png)
 
@@ -204,6 +206,8 @@ The `runs/affordable/` directory contains preprocessed metrics for n=346 sequenc
   - Columns: `prompt_id`, `model_name`, `qa_failure`, `delta_i_values`, `ngram_novelty_values`, `char_entropy_values`
 
 - **`manifest.json`**: Run metadata (seed, configuration)
+
+**Schema enforcement:** Exact column names and types are validated at load time. See [`src/utils.py`](src/utils.py) for schema checks. Missing or renamed columns will raise clear errors.
 
 See [`data/README.md`](data/README.md) for detailed column descriptions.
 
@@ -283,11 +287,10 @@ bash scripts/reproduce_all_figures.sh
 ### CI/CD
 
 GitHub Actions runs on every push:
-- Linting (ruff)
-- Smoke test (<5 min)
-- Full reproduction (~15 min)
+- Linting (ruff + black)
+- Smoke-only CI (<5 min with 5% subsample)
 
-See [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
+Full reproduction (~10-15 min) should be run locally. See [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
 
 ---
 
