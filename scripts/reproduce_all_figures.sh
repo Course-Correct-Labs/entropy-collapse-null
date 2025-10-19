@@ -22,7 +22,7 @@ fi
 mkdir -p runs/affordable/figures
 
 # Run reproduction
-python -m src.cli reproduce --in runs/affordable --out runs/affordable/figures --dpi 600
+python3 -m src.cli reproduce --in runs/affordable --out runs/affordable/figures --dpi 600
 
 echo ""
 echo "=== Figures generated successfully ==="

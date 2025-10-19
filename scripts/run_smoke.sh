@@ -17,7 +17,7 @@ echo ""
 mkdir -p runs/affordable/figures
 
 # Run smoke test
-time python -m src.cli reproduce --in runs/affordable --out runs/affordable/figures --dpi 300 --smoke
+time python3 -m src.cli reproduce --in runs/affordable --out runs/affordable/figures --dpi 300 --smoke
 
 echo ""
 echo "=== Smoke test completed ==="

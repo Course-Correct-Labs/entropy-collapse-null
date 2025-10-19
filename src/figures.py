@@ -151,8 +151,8 @@ def figure2_effective_rank_trajectories(
     df = df.copy()
     df["collapsed"] = df["eci_residualized"].apply(classify_collapse)
 
-    df_collapsed = df[df["collapsed"] is True]
-    df_normal = df[df["collapsed"] is False]
+    df_collapsed = df[df["collapsed"] == True]
+    df_normal = df[df["collapsed"] == False]
 
     # Sample trajectories
     sample_collapsed = df_collapsed.sample(
